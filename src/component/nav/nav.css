@@ -1,0 +1,13 @@
+nav{
+  color:white;
+  text-align: center;
+  display: inline;
+  margin-top: 100px;
+}
+nav .link{
+  text-decoration: none;
+  /* color:white; */
+  text-align: center;
+  margin:40px;
+}
+  
