@@ -5,13 +5,7 @@ import HomeCard from '../homeCard/HomeCard';
 import homeData from '../fakedata/fakedata.json';
 import './Home.css';
 
-// const useStyles = makeStyles(() =>
-//     createStyles({
-        
-//     }),
-// );
 const Home = () => {
-    // const classes = useStyles();
     const [data, setData] = useState(homeData);
 
     return (

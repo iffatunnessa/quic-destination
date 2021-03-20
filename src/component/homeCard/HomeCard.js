@@ -31,7 +31,7 @@ const HomeCard = (props) => {
     return (
         <Grid item xs={12} sm={3}>
             <Card className={classes.root} variant="outlined">
-                <CardActionArea className={classes.area} component={Link} to="/login">
+                <CardActionArea className={classes.area} component={Link} to="/destination">
                     <CardMedia
                         component="img"
                         alt={title}
