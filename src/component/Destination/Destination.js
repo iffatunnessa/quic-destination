@@ -47,7 +47,3 @@ const Destination = () => {
 };
 
 export default Destination;
-
-// export default GoogleApiWrapper({
-//     apiKey: (YOUR_GOOGLE_API_KEY_GOES_HERE)
-//   })(MapContainer)

@@ -17,7 +17,7 @@ const Nav = () => {
                 <Link to="/blog" className="link">Blog</Link>
                 <Link to="/contact" className="link">Contact</Link>
                 {
-                    !(displayName === '') ?
+                    !(displayName === '') ? 
                      <Link to="/" className="disabled-link" >{displayName}</Link>
                     : <Link component={Button} variant="contained" color="secondary" >Login</Link>
                 }

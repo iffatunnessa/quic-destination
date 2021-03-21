@@ -6,8 +6,15 @@ import RideData from '../fakedata/rideData.json';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCircle, faEllipsisV } from '@fortawesome/free-solid-svg-icons'
 
+const useStyles = makeStyles((theme) => ({
+    textField: {
+        backgroundColor: 'white',
+        marginBottom:10,
+        borderRadius : 5
+    }
+}));
 const RideClicked = () => {
-
+    const classes = useStyles();
     const { id } = useParams();
     const [rideData, setrideData] = useState(RideData);
     const [state, setState] = useState(false);
@@ -17,6 +24,7 @@ const RideClicked = () => {
     })
 
     const handleBlur = (e) => {
+
         const newInfo = { ...destination };
         newInfo[e.target.name] = e.target.value;
         setDestination(newInfo);
@@ -25,20 +33,20 @@ const RideClicked = () => {
         <div>
             {!state &&
                 <form>
-                    <TextField
+                    <TextField className={classes.textField}
                         id="from"
                         label="Pick From"
                         type="name"
                         name="from"
-                        variant="outlined"
+                        variant="filled"
                         onBlur={handleBlur}
                     />
-                    <TextField
+                    <TextField className={classes.textField}
                         id="to"
                         label="Pick To"
                         type="toGo"
                         name="to"
-                        variant="outlined"
+                        variant="filled"
                         onBlur={handleBlur}
                     />
                     <Button color="secondary" onClick={() => setState(!state)} variant="contained">Submit</Button>
@@ -52,7 +60,7 @@ const RideClicked = () => {
                         <h3> <FontAwesomeIcon icon={faCircle} style={{ fontSize: 10 }} /> {destination.to}</h3>
                     </div>
                     <div>
-                        {rideData.map(data => {if(data.id === id) {return <RideRoute data={data} ></RideRoute>}})}
+                        {rideData.map(data => { if (data.id === id) { return <RideRoute data={data} ></RideRoute> } })}
                     </div>
                 </div>
             }
