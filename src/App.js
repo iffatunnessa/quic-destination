@@ -11,6 +11,7 @@ import NotFound from './component/NotFound/NotFound';
 import Home from './component/home/Home';
 import Login from './component/login/Login';
 import Destination from './component/Destination/Destination';
+import LoginForm from './component/LoginForm/LoginForm';
 
 export const UserContext = createContext();
 
@@ -26,6 +27,9 @@ function App() {
           </Route>
           <Route path="/login">
             <Login />
+          </Route>
+          <Route path="/loginFrom">
+            <LoginForm />
           </Route>
           <Route exact path="/">
             <Home />

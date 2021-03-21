@@ -84,7 +84,7 @@ const LoginWithOther = (props) => {
 
     return (
         <div style={{ textAlign: 'center' }}>
-            <hr class='solid' />
+            <hr className='solid' />
             <button onClick={handleGoogleSignIn} className={classes.btn}>
                 <FontAwesomeIcon icon={faGoogle} style={{ fontSize: 20, color: "red" }} />
                 <span className={classes.text}>Sign in with Google</span>

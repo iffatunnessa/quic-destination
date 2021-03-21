@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Button, Container, makeStyles, TextField } from '@material-ui/core';
+import { Button, Container, FormControl, FormHelperText, Input, InputLabel, makeStyles, TextField } from '@material-ui/core';
 import { useState } from 'react';
 import firebase from "firebase/app";
 import "firebase/auth";
@@ -7,6 +7,7 @@ import firebaseConfig from '../../firebaseConfig';
 import LoginWithOther from '../loginWithOthers/LoginWithOther';
 import { useHistory, useLocation } from "react-router-dom";
 import { UserContext } from '../../App';
+import LoginForm from '../LoginForm/LoginForm';
 
 if (!firebase.apps.length) {
     firebase.initializeApp(firebaseConfig);
@@ -38,12 +39,13 @@ const useStyles = makeStyles((theme) => ({
 const Login = () => {
     const classes = useStyles();
     const [newUser, setNewUser] = useState(true);
+    const [createdNew, setNewCreated] = useState(false);
     const [loggedInUser, setLoggedInUser] = useContext(UserContext);
     let errorCode, errorMessage;
     const history = useHistory();
     const location = useLocation();
     let { from } = location.state || { from: { pathname: "/" } };
-
+    const [currentPassword, setPasswordcheck] = useState('');
     const [user, setUser] = useState({
         isSignedIn: false,
         displayName: '',
@@ -57,7 +59,8 @@ const Login = () => {
                 .then(res => {
                     const newUserInfo = { ...user };
                     setUser(newUserInfo);
-                    console.log(res.displayName);
+                    setNewCreated(createdNew);
+                    console.log(createdNew);
                     updateUserInfo(res.displayName);
                 })
                 .catch((error) => {
@@ -71,7 +74,7 @@ const Login = () => {
             firebase.auth().signInWithEmailAndPassword(user.email, user.password)
                 .then(res => {
                     const newUserInfo = { ...user };
-                    newUserInfo.isSignedIn = true
+                    newUserInfo.isSignedIn = true;
                     setUser(newUserInfo);
                     setLoggedInUser(newUserInfo);
                     history.replace(from);
@@ -85,27 +88,40 @@ const Login = () => {
         e.preventDefault();
     }
     const handleBlur = (e) => {
-        let isFieldValid = true;
-        let password;
+        let isFieldValid = false;
+        console.log(isFieldValid);
+        if (e.target.name === 'displayName') {
+            if (e.target.value === '') {
+                isFieldValid = false;
+            }
+            else { isFieldValid = true; }
+            console.log("display",isFieldValid);
+        }
         if (e.target.name === 'email') {
             isFieldValid = /\S+@\S+\.\S+/.test(e.target.value);
-
         }
         if (e.target.name === 'password') {
             isFieldValid = e.target.value.length > 6;
-            password = e.target.value;
+            setPasswordcheck(e.target.value);
+            console.log(currentPassword);
+
         }
-        if (e.target.name === 'confirmPassword' && password) {
-            if (e.target.value === password) {
+        if (e.target.name === 'confirmPassword') {
+            if (e.target.value === currentPassword) {
                 isFieldValid = true;
-                console.log(isFieldValid);
+                console.log("check", currentPassword);
+            }
+            else if (e.target.value === '') {
+                isFieldValid = false;
+                console.log("wrong:", currentPassword);
             }
             else {
                 isFieldValid = false;
-                console.log(isFieldValid);
             }
+            console.log("con:", isFieldValid);
         }
-        if (isFieldValid) {
+        if (isFieldValid === true) {
+            console.log("last",isFieldValid);
             const newUserInfo = { ...user };
             newUserInfo[e.target.name] = e.target.value;
             setUser(newUserInfo);
@@ -124,23 +140,23 @@ const Login = () => {
     return (
         <Container maxWidth="sm" className={classes.container}>
             <div id='alert'></div>
-            { newUser && <div>
+            { newUser && !createdNew && <div>
                 <h2>Create an account</h2>
                 <form onSubmit={handleSubmit} className={classes.root} noValidate autoComplete="off">
                     <TextField
                         onBlur={handleBlur}
                         id="standard-name-input"
                         label="Name"
-                        type="name"
+                        type="text"
                         name="displayName"
                         required
-                    // helperText={error ? "Name needs to be 'a'" : "Perfect!"}
+                        helperText="Put your Full name here"
                     />
                     <TextField
                         onBlur={handleBlur}
                         id="standard-email-input"
                         label="Username or Email"
-                        type="email"
+                        type="text"
                         name='email'
                         required
                     />
@@ -166,33 +182,16 @@ const Login = () => {
                         Create an account
                     </Button>
                 </form>
-                <p>{errorCode}{errorMessage}</p>
+                {/* <p>{errorCode}{errorMessage}</p> */}
                 <p style={{ textAlign: 'center' }}>Already have an account? <Button onClick={() => setNewUser(!newUser)} style={{
                     color: '#FF6E40',
                     textTransform: 'capitalize',
                 }}>Login</Button></p>
             </div>}
 
-            { !newUser && <div> <h2>Login</h2>
-                <form className={classes.root} onSubmit={handleSubmit} noValidate autoComplete="off">
-                    <TextField
-                        onBlur={handleBlur}
-                        id="login-email-input"
-                        label="Username or Email"
-                        type="email"
-                        name="email"
-                    />
-                    <TextField
-                        onBlur={handleBlur}
-                        id="login-password-input"
-                        label="Password"
-                        type="password"
-                        autoComplete="current-password"
-                        name="password"
-                    />
-                    <Button type='submit' variant="contained" className={classes.btn} >Log In</Button>
-                </form>
-            </div>}
+            { !newUser &&
+                <LoginForm handleSubmit={handleSubmit} handleBlur={handleBlur} />
+            }
             <LoginWithOther user={user} />
         </Container>
     );

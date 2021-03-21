@@ -7,7 +7,6 @@ import './Home.css';
 
 const Home = () => {
     const [data, setData] = useState(homeData);
-
     return (
         <div className='home'>
             <Container maxWidth="md">

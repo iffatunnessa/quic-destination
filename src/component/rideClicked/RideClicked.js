@@ -24,7 +24,6 @@ const RideClicked = () => {
     })
 
     const handleBlur = (e) => {
-
         const newInfo = { ...destination };
         newInfo[e.target.name] = e.target.value;
         setDestination(newInfo);
