@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react';
 import firebase from "firebase/app";
 import "firebase/auth";
 import firebaseConfig from '../../firebaseConfig';
-import { Button, makeStyles } from '@material-ui/core';
+import { Button, Grid, makeStyles } from '@material-ui/core';
 import { UserContext } from '../../App';
 import { useHistory, useLocation } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -83,18 +83,22 @@ const LoginWithOther = (props) => {
     }
 
     return (
-        <div style={{ textAlign: 'center' }}>
-            <hr className='solid' />
-            <button onClick={handleGoogleSignIn} className={classes.btn}>
-                <FontAwesomeIcon icon={faGoogle} style={{ fontSize: 20, color: "red" }} />
-                <span className={classes.text}>Sign in with Google</span>
-            </button>
-            <button onClick={handleFacebookSignIn} className={classes.btn}>
-                <FontAwesomeIcon icon={faFacebook} style={{ fontSize: 20, color: "blue" }} />
-                <span className={classes.text}>Sign in with Facebook</span>
-            </button>
+        <Grid container  spacing={0}>
+            <Grid item xs={6} sm={12}>
+                <div style={{ textAlign: 'center' }}>
+                    <hr className='solid' />
+                    <button onClick={handleGoogleSignIn} className={classes.btn}>
+                        <FontAwesomeIcon icon={faGoogle} style={{ fontSize: 20, color: "red" }} />
+                        <span className={classes.text}>Sign in with Google</span>
+                    </button>
+                    <button onClick={handleFacebookSignIn} className={classes.btn}>
+                        <FontAwesomeIcon icon={faFacebook} style={{ fontSize: 20, color: "blue" }} />
+                        <span className={classes.text}>Sign in with Facebook</span>
+                    </button>
 
-        </div>
+                </div>
+            </Grid>
+        </Grid>
     );
 };
 

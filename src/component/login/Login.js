@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Button, Container, FormControl, FormHelperText, Input, InputLabel, makeStyles, TextField } from '@material-ui/core';
+import { Button, Container, FormControl, FormHelperText, Grid, Input, InputLabel, makeStyles, TextField } from '@material-ui/core';
 import { useState } from 'react';
 import firebase from "firebase/app";
 import "firebase/auth";
@@ -34,14 +34,22 @@ const useStyles = makeStyles((theme) => ({
         color: 'white',
         width: "95%",
         borderRadius: 0
-    }
+    },
+    errormsg: {
+        color: 'red'
+    },
+    msg: {
+        color: 'green'
+    },
 }));
 const Login = () => {
     const classes = useStyles();
     const [newUser, setNewUser] = useState(true);
     const [createdNew, setNewCreated] = useState(false);
     const [loggedInUser, setLoggedInUser] = useContext(UserContext);
-    let errorCode, errorMessage;
+    const [errorMessage, setErrorMessage] = useState('');
+    const [loginErrorMessage, setLoginErrorMessage] = useState('');
+    const [successMessage, setSucessMessage] = useState('');
     const history = useHistory();
     const location = useLocation();
     let { from } = location.state || { from: { pathname: "/" } };
@@ -60,13 +68,14 @@ const Login = () => {
                     const newUserInfo = { ...user };
                     setUser(newUserInfo);
                     setNewCreated(createdNew);
-                    console.log(createdNew);
+                    setSucessMessage("Account has been made, please try to login");
                     updateUserInfo(res.displayName);
                 })
                 .catch((error) => {
-                    errorCode = error.code;
-                    errorMessage = error.message;
-                    // <p>{errorCode}{errorMessage}</p>
+                    var errorCode = error.code;
+                    var errorMessage = error.message;
+                    setErrorMessage(errorMessage);
+                    console.log(errorMessage, errorCode);
                 });
 
         }
@@ -82,7 +91,7 @@ const Login = () => {
                 .catch((error) => {
                     var errorCode = error.code;
                     var errorMessage = error.message;
-                    <p>{errorCode}{errorMessage}</p>
+                    setLoginErrorMessage(error.message);
                 });
         }
         e.preventDefault();
@@ -95,7 +104,7 @@ const Login = () => {
                 isFieldValid = false;
             }
             else { isFieldValid = true; }
-            console.log("display",isFieldValid);
+            console.log("display", isFieldValid);
         }
         if (e.target.name === 'email') {
             isFieldValid = /\S+@\S+\.\S+/.test(e.target.value);
@@ -104,7 +113,6 @@ const Login = () => {
             isFieldValid = e.target.value.length > 6;
             setPasswordcheck(e.target.value);
             console.log(currentPassword);
-
         }
         if (e.target.name === 'confirmPassword') {
             if (e.target.value === currentPassword) {
@@ -121,7 +129,7 @@ const Login = () => {
             console.log("con:", isFieldValid);
         }
         if (isFieldValid === true) {
-            console.log("last",isFieldValid);
+            console.log("last", isFieldValid);
             const newUserInfo = { ...user };
             newUserInfo[e.target.name] = e.target.value;
             setUser(newUserInfo);
@@ -139,60 +147,70 @@ const Login = () => {
     }
     return (
         <Container maxWidth="sm" className={classes.container}>
-            <div id='alert'></div>
-            { newUser && !createdNew && <div>
-                <h2>Create an account</h2>
-                <form onSubmit={handleSubmit} className={classes.root} noValidate autoComplete="off">
-                    <TextField
-                        onBlur={handleBlur}
-                        id="standard-name-input"
-                        label="Name"
-                        type="text"
-                        name="displayName"
-                        required
-                        helperText="Put your Full name here"
-                    />
-                    <TextField
-                        onBlur={handleBlur}
-                        id="standard-email-input"
-                        label="Username or Email"
-                        type="text"
-                        name='email'
-                        required
-                    />
-                    <TextField
-                        onBlur={handleBlur}
-                        id="standard-password-input"
-                        label="Password"
-                        type="password"
-                        autoComplete="current-password"
-                        name="password"
-                        required
-                    />
-                    <TextField
-                        onBlur={handleBlur}
-                        id="standard-confirm-password-input"
-                        label="Confirm Password"
-                        type="password"
-                        autoComplete="current-password"
-                        name="confirmPassword"
-                        required
-                    />
-                    <Button type='submit' variant="contained" className={classes.btn} >
-                        Create an account
-                    </Button>
-                </form>
-                {/* <p>{errorCode}{errorMessage}</p> */}
-                <p style={{ textAlign: 'center' }}>Already have an account? <Button onClick={() => setNewUser(!newUser)} style={{
-                    color: '#FF6E40',
-                    textTransform: 'capitalize',
-                }}>Login</Button></p>
-            </div>}
+            <Grid container spacing={0}>
+                <Grid item xs={6} sm={12}>
+                    <div id='alert'>  {errorMessage && (
+                        <p className={classes.errormsg}> {errorMessage} </p>
+                    )}
+                    {successMessage && (
+                        <p className={classes.msg}> {successMessage} </p>
+                    )}
+                    </div>
+                    {newUser && !createdNew && <div>
+                        <h2>Create an account</h2>
+                        <form onSubmit={handleSubmit} className={classes.root} noValidate autoComplete="off">
+                            <TextField
+                                onBlur={handleBlur}
+                                id="standard-name-input"
+                                label="Name"
+                                type="text"
+                                name="displayName"
+                                required
+                                helperText="Put your Full name here"
+                            />
+                            <TextField
+                                onBlur={handleBlur}
+                                id="standard-email-input"
+                                label="Username or Email"
+                                type="text"
+                                name='email'
+                                required
+                                helperText="example@example.com"
+                            />
+                            <TextField
+                                onBlur={handleBlur}
+                                id="standard-password-input"
+                                label="Password"
+                                type="password"
+                                autoComplete="current-password"
+                                name="password"
+                                required
+                                helperText="more than 6 letters/digits"
+                            />
+                            <TextField
+                                onBlur={handleBlur}
+                                id="standard-confirm-password-input"
+                                label="Confirm Password"
+                                type="password"
+                                autoComplete="current-password"
+                                name="confirmPassword"
+                                required
+                            />
+                            <Button type='submit' variant="contained" className={classes.btn}>
+                                Create an account
+                             </Button>
+                        </form>
+                        <p style={{ textAlign: 'center' }}>Already have an account? <Button onClick={() => setNewUser(!newUser)} style={{
+                            color: '#FF6E40',
+                            textTransform: 'capitalize',
+                        }}>Login</Button></p>
+                    </div>}
+                </Grid>
+                {!newUser &&
+                    <LoginForm handleSubmit={handleSubmit} error={loginErrorMessage} handleBlur={handleBlur} />}
+                <LoginWithOther user={user} />
 
-            { !newUser &&
-                <LoginForm handleSubmit={handleSubmit} handleBlur={handleBlur} />
-            }
-            <LoginWithOther user={user} />
+            </Grid>
         </Container>
     );
 };

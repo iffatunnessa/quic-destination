@@ -37,7 +37,7 @@ const Destination = () => {
                     <Grid item className={classes.grid} xs={12} sm={3}>
                         <RideClicked />
                     </Grid>
-                    <Grid item xs={12} sm={8} className={classes.map} >
+                    <Grid item xs={12} sm={6} className={classes.map} >
                         <GoogleMap />
                     </Grid>
                 </Grid>

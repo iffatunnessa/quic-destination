@@ -11,6 +11,10 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor: 'white',
         marginBottom:10,
         borderRadius : 5
+    },
+    btn:{
+        width:'85%',
+        borderRadius : 0
     }
 }));
 const RideClicked = () => {
@@ -48,7 +52,7 @@ const RideClicked = () => {
                         variant="filled"
                         onBlur={handleBlur}
                     />
-                    <Button color="secondary" onClick={() => setState(!state)} variant="contained">Submit</Button>
+                    <Button color="secondary" className={classes.btn} onClick={() => setState(!state)} variant="contained">Submit</Button>
                 </form>
             }
             {
