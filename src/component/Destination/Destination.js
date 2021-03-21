@@ -1,8 +1,7 @@
 import { Button, Container, Grid, makeStyles, TextField } from '@material-ui/core';
-import React from 'react';
+import React, { useState } from 'react';
 import RideClicked from '../rideClicked/RideClicked';
 import GoogleMap from './GoogleMap';
-
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -18,17 +17,18 @@ const useStyles = makeStyles((theme) => ({
         padding: 30,
         borderRadius: 5,
         maxWidth: 300,
-        backgroundColor: 'white'
+        backgroundColor: 'lightslategrey'
     },
     map: {
         maxWidth: 400,
         marginLeft: 20,
+        width: '100%',
+        height: '100%'
     }
 }));
 
 
 const Destination = () => {
-   
     const classes = useStyles();
     return (
         <div>
@@ -38,7 +38,7 @@ const Destination = () => {
                         <RideClicked />
                     </Grid>
                     <Grid item xs={12} sm={8} className={classes.map} >
-                        {/* <GoogleMap /> */}
+                        <GoogleMap />
                     </Grid>
                 </Grid>
             </Container>

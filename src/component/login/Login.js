@@ -5,7 +5,7 @@ import firebase from "firebase/app";
 import "firebase/auth";
 import firebaseConfig from '../../firebaseConfig';
 import LoginWithOther from '../loginWithOthers/LoginWithOther';
-import { useHistory, useLocation } from "react-router-dom";
+import { useHistory, useLocation, ReactDOM } from "react-router-dom";
 import { UserContext } from '../../App';
 
 if (!firebase.apps.length) {
@@ -51,11 +51,13 @@ const Login = () => {
                     setUser(newUserInfo);
                     console.log(res.displayName);
                     updateUserInfo(res.displayName);
+                    ReactDOM.render(<p>Hallo</p>, document.getElementById('alert'));
+                    // <h1>{res.displayName} succesfully logged in</h1>
                 })
                 .catch((error) => {
                     var errorCode = error.code;
                     var errorMessage = error.message;
-                    console.log(errorCode,errorMessage);
+                    <p>{errorCode}{errorMessage}</p>
                 });
 
         }
@@ -67,7 +69,6 @@ const Login = () => {
                     setUser(newUserInfo);
                     setLoggedInUser(newUserInfo);
                     history.replace(from);
-                    console.log(res.displayName, "succesfully logged in");
                 })
                 .catch((error) => {
                     var errorCode = error.code;
@@ -106,6 +107,7 @@ const Login = () => {
     }
     return (
         <Container maxWidth="sm" className={classes.container}>
+            <div id='alert'></div>
             { newUser && <div>
                 <h2>Create an account</h2>
                 <form onSubmit={handleSubmit} className={classes.root} noValidate autoComplete="off">

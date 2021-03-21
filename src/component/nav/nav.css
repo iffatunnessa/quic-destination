@@ -1,5 +1,6 @@
 .header{
   font-size: 30px;
+  margin-right: 100px;
 }
 nav .link{
   text-decoration: none;
@@ -11,6 +12,6 @@ nav .link{
   cursor: default;
   text-decoration: none;
   color:white;
-  margin:40px;
+  margin:20px;
 }
   

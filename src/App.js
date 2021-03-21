@@ -10,7 +10,6 @@ import PrivateRoute from './component/PrivateRoute/PrivateRoute';
 import NotFound from './component/NotFound/NotFound';
 import Home from './component/home/Home';
 import Login from './component/login/Login';
-import RideClicked from './component/rideClicked/RideClicked';
 import Destination from './component/Destination/Destination';
 
 export const UserContext = createContext();
@@ -20,7 +19,6 @@ function App() {
   return (
     <UserContext.Provider value={[loggedInUser, setLoggedInUser]}>
       <Router>
-        <h1>{loggedInUser.displayName}</h1>
         <Nav />
         <Switch>
           <Route path="/home">
@@ -32,7 +30,7 @@ function App() {
           <Route exact path="/">
             <Home />
           </Route>
-          <PrivateRoute path="/">
+          <PrivateRoute path="/destination/:id">
             <Destination />
           </PrivateRoute>
           <Route path="*">

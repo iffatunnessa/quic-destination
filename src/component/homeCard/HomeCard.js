@@ -26,12 +26,11 @@ const useStyles = makeStyles(() =>
 
 const HomeCard = (props) => {
     const classes = useStyles();
-    const { img, title } = props.element;
-    console.log(props);
+    const { id, img, title } = props.element;
     return (
         <Grid item xs={12} sm={3}>
             <Card className={classes.root} variant="outlined">
-                <CardActionArea className={classes.area} component={Link} to="/destination">
+                <CardActionArea className={classes.area} component={Link} to={"/destination/"+id}>
                     <CardMedia
                         component="img"
                         alt={title}

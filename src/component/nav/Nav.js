@@ -7,11 +7,6 @@ import { UserContext } from '../../App';
 const Nav = () => {
     const [loggedInUser, setLoggedInUser] = useContext(UserContext);
     const displayName = loggedInUser.displayName;
-    const isSignedIn =()=>{
-        if (displayName === '') { return false; }
-        return true;
-    } 
-
 
     return (
         <Container maxWidth='md'>
@@ -22,8 +17,9 @@ const Nav = () => {
                 <Link to="/blog" className="link">Blog</Link>
                 <Link to="/contact" className="link">Contact</Link>
                 {
-                    isSignedIn ? <Link to="/" className="disabled-link" >{displayName}</Link>
-                        : <Button variant="contained" color="secondary" >Login</Button>
+                    !(displayName === '') ?
+                     <Link to="/" className="disabled-link" >{displayName}</Link>
+                    : <Link component={Button} variant="contained" color="secondary" >Login</Link>
                 }
             </nav>
         </Container >
